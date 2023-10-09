@@ -7,30 +7,24 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int opcao = -1;
-        Robo robo = new Robo("A");
+        Robo robo = new Robo("A", 1, 1);
         int[] p = pegarPosicaoComida();
-        Plano plano = new Plano(p[0], p[1]);
-        plano.addRobo(robo, 1, 1);
-        // plano.addRobo(robo2);
+        Robo.setAlimento(p[0], p[1]);
         boolean stop = false;
-        plano.mostrar();
+        Robo.mostrar();
         while (opcao != 0) {
-            do {
-                try {
-                    opcao = input.nextInt();
-                    stop = true;
-                } catch (InputMismatchException e) {
-                    System.out.println("Opção invalida");
-                    input.nextLine();
-                }
-
-            } while (!stop);
+            System.out.println("Digite seu próximo movimento:\n1- Up\n2- Down\n3- Right\n4- Left");
+            opcao = input.nextInt();
             try{
-                plano.moverRobo(robo, opcao);
+                robo.mover(opcao);
             } catch (MovimentoInvalidoException e) {
                 System.out.println("Movimento inválido! Tente novamente");
             }
-            plano.mostrar();
+            Robo.mostrar();
+            if(Robo.encontrouAlimento(robo)){
+                System.out.println("Alimento encontrado.");
+                break;
+            }
         }
         input.close();
     }
@@ -41,7 +35,8 @@ public class Main {
         int x = input.nextInt();
         System.out.println("Digite o Y da comida:");
         int y = input.nextInt();
-        return new int[]{x, y};
+        return new int[]{x-1, y-1};
     }
+
 
 }
