@@ -4,38 +4,47 @@ import java.util.Scanner;
 
 public class Main3 {
     public static void main(String[] args) {
+
         Scanner input = new Scanner(System.in);
-        Robo robo1 = new RoboInteligente("A", 1, 1);
-        Robo robo2 = new Robo("B", 1, 2);
+        Robo robo1 = new RoboInteligente("A", 1, 1);  //instanciando
+        Robo robo2 = new Robo("B", 5, 5);
         int[] p = pegarPosicaoComida();
         Robo.setAlimento(p[0], p[1]);
+
         input.close();
         Robo.mostrar();
-        while (!Robo.encontrouAlimento(robo1) || !Robo.encontrouAlimento(robo2)) {
-            Robo[] robos = {robo1, robo2};
+        sleep();
+        Robo[] robos = {robo1, robo2};
+        int pararRobo = -1;
+
+        while (!Robo.encontrouAlimento(robo1) || !Robo.encontrouAlimento(robo2)) { //verifica se pelo menos um dos robos nao encontrou o alimento
             for (int i = 0; i < 2; i++) {
+                if (i == pararRobo) continue; //ignorar o robo que ja encontrou o alimento
+
                 System.out.println("Vez do robo: " + robos[i].getNome());
-                sleep();
                 String opcao = robos[i].gerarMovimento();
                 System.out.println("O robo " + robos[i].getNome() + " fez o movimento " + opcao);
+
                 try {
                     robos[i].mover(opcao);
-                    if (robos[i] instanceof RoboInteligente) {
-                        ((RoboInteligente) robos[i]).ultimoMovimentoValido = true;
+                    if (Robo.encontrouAlimento(robos[i]) && pararRobo == -1) { // fazer o robo parar de se mover
+                        pararRobo = i;
+                        Robo.setAlimento(p[0], p[1]); // setar alimento
                     }
                     robos[i].movimentosValidos++;
-                    //Robo.mostrar();
-                } catch (MovimentoInvalidoException e) {
+                }
+                catch (MovimentoInvalidoException e) {
                     robos[i].movimentosInvalidos++;
                     if (robos[i] instanceof RoboInteligente) {
+                        // o proximo movimento do robointeligente vai ser valido pq o ultimo foi invalido
+                        // depois de um movimento errado ele precisa fazer um certo
                         ((RoboInteligente) robos[i]).ultimoMovimentoValido = false;
                     }
                     System.out.println("O robo fez um movimento invalido");
                 }
-                //System.out.println("O robo " + robos[i].getNome() + " fez " + robos[i].movimentosValidos + " movimentos validos");
-                //System.out.println("O robo " + robos[i].getNome() + " fez " + robos[i].movimentosInvalidos + " movimentos invalidos");
-                sleep();
+
                 Robo.mostrar();
+                sleep();
             }
         }
 
@@ -48,9 +57,8 @@ public class Main3 {
     }
     public static void sleep() {
         try {
-            Thread.sleep(2500);
-        } catch (InterruptedException e) {
-            return;
+            Thread.sleep(1500);
+        } catch (InterruptedException ignored) {
         }
     }
 

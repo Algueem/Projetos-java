@@ -141,22 +141,14 @@ public class Robo {
 		for (int i = 0; i < 5; i++) {
 			System.out.print(Ansi.BACKGROUND_BLACK + (i+1) + "|");
 			for (int j = 0; j < 5; j++) {
-				String obj = "";
-				switch (mapa[i][j]) {
-					case "O":
-						obj = Ansi.WHITE + mapa[i][j] + " ";
-						break;
-					case "\uD83C\uDF4E":
-						obj = Ansi.RED + "C" + " ";
-						break;
-					case "A":
-						obj = Ansi.BLUE + mapa[i][j] + " ";
-						break;
-					case "B":
-						obj = Ansi.GREEN + mapa[i][j] + " ";
-						break;
-				}
-				System.out.print(obj);
+				String obj = switch (mapa[i][j]) {
+					case "O" -> Ansi.WHITE + mapa[i][j] + " ";
+					case "\uD83C\uDF4E" -> Ansi.RED + "C ";
+					case "A" -> Ansi.BLUE + mapa[i][j] + " ";
+					case "B" -> Ansi.GREEN + mapa[i][j] + " ";
+					default -> "";
+				};
+				System.out.print(obj+Ansi.WHITE);
 				//System.out.print(Ansi.WHITE + mapa[i][j]+"  ");
 			}
 			System.out.print("\n");

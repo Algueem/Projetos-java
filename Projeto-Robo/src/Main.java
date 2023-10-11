@@ -10,7 +10,6 @@ public class Main {
         Robo robo = new Robo("A", 1, 1);
         int[] p = pegarPosicaoComida();
         Robo.setAlimento(p[0], p[1]);
-        boolean stop = false;
         Robo.mostrar();
         while (opcao != 0) {
             System.out.println("Digite seu próximo movimento:\n1- Up\n2- Down\n3- Right\n4- Left");
